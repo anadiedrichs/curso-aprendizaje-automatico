@@ -1,0 +1,877 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias &#8212; Introducción al aprendizaje automático</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '3_1_Clasificacion_Enfermedad_Coronaria';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3_4_Evaluación del Modelo de Clasificación de pacientes con enfermedades coronarias" href="3_4_Clasificacion_Enfermedad_Coronaria_Evaluacion_Modelos.html" />
+    <link rel="prev" title="Métricas de evaluación en la clasificación" href="Clasificaci%C3%B3n_binaria.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Introducción al aprendizaje automático - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Introducción al aprendizaje automático - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    ¡Hola!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocesamiento_2.html">Preprocesamiento de Datos Tabulares para Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Clustering_Kmeans.html">Clustering con K-Means</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="Reduccion_dimensionalidad_PCA_tsne_umap.html">PCA</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="clase_2_regresion_lineal_introduccion.html">Clase 2.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_1_Regresion_Lineal_Multiple.html">24 -Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_5_Cross_Validation_Regresion_Lineal_Multiple.html">2_5 - Cross Validation: Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_6_Prediccion_Precios_Casas_Regresion_Lineal_Multiple.html">2_6 - Ejercicio 5: Prediccion Precios Casas Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_7_underfitting_overfitting_example.html">Underfitting y Overfitting en Modelos Polinomiales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Clasificaci%C3%B3n_binaria.html">Métricas de evaluación en la clasificación</a></li>
+
+
+
+
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_4_Clasificacion_Enfermedad_Coronaria_Evaluacion_Modelos.html">3_4_Evaluación del Modelo de Clasificación de pacientes con enfermedades coronarias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_networks_introduction.html">El perceptrón</a></li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/anadiedrichs/curso-aprendizaje-automatico" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/anadiedrichs/curso-aprendizaje-automatico/issues/new?title=Issue%20on%20page%20%2F3_1_Clasificacion_Enfermedad_Coronaria.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/3_1_Clasificacion_Enfermedad_Coronaria.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-datos">1. Carga de datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-los-datos">2. Visualización de los datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-de-estructura-de-datos-a-numpy-y-transformacion-de-las-etiquetas">3. Cambio de estructura de datos a numpy y transformación de las etiquetas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creaccion-del-modelo-hipotesis-y-ajuste">4. Creacción del modelo (hipótesis) y ajuste</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obtencion-del-modelo-hipotesis">5. Obtención del modelo (hipótesis)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acierto-del-modelo">6. Acierto del Modelo</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ejercicio-7-clasificacion-de-pacientes-con-enfermedades-coronarias">
+<h1>31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias<a class="headerlink" href="#ejercicio-7-clasificacion-de-pacientes-con-enfermedades-coronarias" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>El objetivo de este ejercicio es el de obtener un modelo capaz de predecir si un paciente tiene o no una enfermedad coronaria.</p></li>
+<li><p>Sobre el Dataset se tienen las siguientes características:</p>
+<ul>
+<li><p>age: Edad en años</p></li>
+<li><p>sex: (1 = hombre; 0 = mujer)</p></li>
+<li><p>cp: Tipo de dolor en el pecho</p></li>
+<li><p>trestbps: Presión arterial</p></li>
+<li><p>chol: Colesterol</p></li>
+<li><p>fbs: (azúcar en sangre en ayunas&gt; 120 mg / dl) (1 = verdadero; 0 = falso)</p></li>
+<li><p>restecg: Resultados electrocardiográficos en reposo</p></li>
+<li><p>thalach: Frecuencia cardíaca máxima alcanzada</p></li>
+<li><p>exang: Angina inducida por ejercicio (1 = sí; 0 = no)</p></li>
+<li><p>oldpeak: Depresión del ST inducida por el ejercicio relativo al descanso</p></li>
+<li><p>slope: Pendiente del segmento pico del ejercicio ST</p></li>
+<li><p>ca: Número de vasos principales (0-3) coloreados por flourosopía</p></li>
+<li><p>thal: 3 = normal; 6 = defecto fijo; 7 = defecto reversible</p></li>
+<li><p>target: 1 = Enfermo, 0 = Sano</p></li>
+</ul>
+</li>
+<li><p>En este ejercicio <em><strong>se realizará una regresión logística</strong></em> para que genere un modelo que sea capaz de clasificar a un paciente indicando si sufre o no una enfermendad coronaria.</p></li>
+<li><p>Para ello hay que tomar las variables de entrada que se consideren y como variable de salida el target.</p></li>
+<li><p>Para resolver este problema vamos a realizar los siguientes pasos:
+<span></span><br></p>
+<ol class="arabic simple">
+<li><p>Carga de datos (Resuelto)
+<span></span><br></p></li>
+<li><p><em><strong>Visualización de los datos</strong></em>, de esta manera podremos seleccionar las variables que consideremos más relevantes visualmente.
+<span></span><br></p></li>
+<li><p><em><strong>Cambio de estructura de datos a numpy y transformación de las etiquetas</strong></em>.
+<span></span><br></p></li>
+<li><p><em><strong>Creacción del modelo (hipótesis) y ajuste</strong></em>.
+<span></span><br></p></li>
+<li><p><em><strong>Obtención del modelo (hipótesis)</strong></em>. Solo es necesario mostrar los parámetros de la función de decisión.
+<span></span><br></p></li>
+<li><p><em><strong>Acierto del Modelo</strong></em>. Para obtener el porcentaje de acierto del modelo hay que llamar a la función “score(X,y)” del objeto de la clase “LogisticRegression()” creado previamente.</p></li>
+</ol>
+</li>
+</ul>
+<hr>
+<ul class="simple">
+<li><p>En primer lugar vamos a importar las librerías necesarias:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;numpy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="carga-de-datos">
+<h2>1. Carga de datos<a class="headerlink" href="#carga-de-datos" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Los datos se encuentran en el fichero: <strong>“./data/heart_disease.csv”</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../data/heart_disease.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>cp</th>
+      <th>trestbps</th>
+      <th>chol</th>
+      <th>fbs</th>
+      <th>restecg</th>
+      <th>thalach</th>
+      <th>exang</th>
+      <th>oldpeak</th>
+      <th>slope</th>
+      <th>ca</th>
+      <th>thal</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>189</th>
+      <td>41</td>
+      <td>1</td>
+      <td>0</td>
+      <td>110</td>
+      <td>172</td>
+      <td>0</td>
+      <td>0</td>
+      <td>158</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>114</th>
+      <td>55</td>
+      <td>1</td>
+      <td>1</td>
+      <td>130</td>
+      <td>262</td>
+      <td>0</td>
+      <td>1</td>
+      <td>155</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>126</th>
+      <td>47</td>
+      <td>1</td>
+      <td>0</td>
+      <td>112</td>
+      <td>204</td>
+      <td>0</td>
+      <td>1</td>
+      <td>143</td>
+      <td>0</td>
+      <td>0.1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>69</td>
+      <td>0</td>
+      <td>3</td>
+      <td>140</td>
+      <td>239</td>
+      <td>0</td>
+      <td>1</td>
+      <td>151</td>
+      <td>0</td>
+      <td>1.8</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>49</td>
+      <td>1</td>
+      <td>1</td>
+      <td>130</td>
+      <td>266</td>
+      <td>0</td>
+      <td>1</td>
+      <td>171</td>
+      <td>0</td>
+      <td>0.6</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<hr>
+</section>
+<section id="visualizacion-de-los-datos">
+<h2>2. Visualización de los datos<a class="headerlink" href="#visualizacion-de-los-datos" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;husl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x7f994c033ef0&gt;
+</pre></div>
+</div>
+<img alt="_images/25af44292ca5fbc3703c5b78ab3cbdbb72f836c795af2c1d7d7ee4dc4d6b29a4.png" src="_images/25af44292ca5fbc3703c5b78ab3cbdbb72f836c795af2c1d7d7ee4dc4d6b29a4.png" />
+</div>
+</div>
+<hr>
+</section>
+<section id="cambio-de-estructura-de-datos-a-numpy-y-transformacion-de-las-etiquetas">
+<h2>3. Cambio de estructura de datos a numpy y transformación de las etiquetas<a class="headerlink" href="#cambio-de-estructura-de-datos-a-numpy-y-transformacion-de-las-etiquetas" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>En este ejemplo no será necesario transformar las etiquetas del target a números ya que de por si tienen valores 0 y 1.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;trestbps&#39;</span><span class="p">,</span> <span class="s1">&#39;chol&#39;</span><span class="p">,</span> <span class="s1">&#39;fbs&#39;</span><span class="p">,</span> <span class="s1">&#39;restecg&#39;</span><span class="p">,</span> <span class="s1">&#39;thalach&#39;</span><span class="p">,</span> <span class="s1">&#39;exang&#39;</span><span class="p">,</span> <span class="s1">&#39;oldpeak&#39;</span><span class="p">,</span> <span class="s1">&#39;slope&#39;</span><span class="p">,</span> <span class="s1">&#39;ca&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>   
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>                    
+</pre></div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="creaccion-del-modelo-hipotesis-y-ajuste">
+<h2>4. Creacción del modelo (hipótesis) y ajuste<a class="headerlink" href="#creaccion-del-modelo-hipotesis-y-ajuste" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creamos un objeto de la clase LogisticRegression pasandole una serie de parámetros</span>
+<span class="n">logreg</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;liblinear&#39;</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;ovr&#39;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Entrenamos el modelo</span>
+<span class="n">logreg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LogisticRegression(max_iter=50, multi_class=&#39;ovr&#39;, solver=&#39;liblinear&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="obtencion-del-modelo-hipotesis">
+<h2>5. Obtención del modelo (hipótesis)<a class="headerlink" href="#obtencion-del-modelo-hipotesis" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Obtener los parámetros de la función de decisión.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">betas</span> <span class="o">=</span> <span class="n">logreg</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">beta_0</span> <span class="o">=</span> <span class="n">logreg</span><span class="o">.</span><span class="n">intercept_</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Z = </span><span class="si">{b0:0.2f}</span><span class="s2"> + </span><span class="si">{b1:0.2f}</span><span class="s2"> · age + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b2:0.2f}</span><span class="s2"> · sex + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b3:0.2f}</span><span class="s2"> · cp + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b4:0.2f}</span><span class="s2"> · trestbps + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b5:0.2f}</span><span class="s2"> · chol + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b6:0.2f}</span><span class="s2"> · fbs + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b7:0.2f}</span><span class="s2"> · restecg + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b8:0.2f}</span><span class="s2"> · thalach + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b9:0.2f}</span><span class="s2"> · exang + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b10:0.2f}</span><span class="s2"> · oldpeak + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b11:0.2f}</span><span class="s2"> · slope + &quot;</span> \
+      <span class="s2">&quot;</span><span class="si">{b12:0.2f}</span><span class="s2"> · ca&quot;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b0</span><span class="o">=</span><span class="n">beta_0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b1</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">b2</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">b3</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">b4</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> 
+              <span class="n">b5</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">b6</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">b7</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="n">b8</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+              <span class="n">b9</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">b10</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span> <span class="n">b11</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="n">b12</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">11</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Z = 0.24 + 0.00 · age + -1.58 · sex + 0.81 · cp + -0.02 · trestbps + -0.00 · chol + 0.20 · fbs + 0.38 · restecg + 0.03 · thalach + -0.86 · exang + -0.53 · oldpeak + 0.50 · slope + -0.75 · ca
+</pre></div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="acierto-del-modelo">
+<h2>6. Acierto del Modelo<a class="headerlink" href="#acierto-del-modelo" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Para obtener el porcentaje de acierto del modelo hay que llamar a la función <strong>“.score(X,y)”</strong> del objeto de la clase “LogisticRegression()” creado previamente.</p></li>
+<li><p>Donde <em><strong>X son las variables de entrada</strong></em> de los datos de entrenamiento e <em><strong>y el target</strong></em>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logreg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.858085808580858
+</pre></div>
+</div>
+</div>
+</div>
+<hr>
+<p><em>Este Notebook ha sido desarrollado por <strong>Ricardo Moya García</strong> y registrado en Safe Creative como <em><strong>Atribución-NoComercial-CompartirIgual</strong></em>.</em></p>
+<img src="../imgs/CC_BY-NC-SA.png" alt="CC BY-NC"></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Clasificaci%C3%B3n_binaria.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Métricas de evaluación en la clasificación</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_4_Clasificacion_Enfermedad_Coronaria_Evaluacion_Modelos.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3_4_Evaluación del Modelo de Clasificación de pacientes con enfermedades coronarias</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-datos">1. Carga de datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-los-datos">2. Visualización de los datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-de-estructura-de-datos-a-numpy-y-transformacion-de-las-etiquetas">3. Cambio de estructura de datos a numpy y transformación de las etiquetas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creaccion-del-modelo-hipotesis-y-ajuste">4. Creacción del modelo (hipótesis) y ajuste</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obtencion-del-modelo-hipotesis">5. Obtención del modelo (hipótesis)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acierto-del-modelo">6. Acierto del Modelo</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ana Diedrichs
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

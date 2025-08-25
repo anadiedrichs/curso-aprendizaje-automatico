@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Validación cruzada &#8212; Introducción al aprendizaje automático</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Validación_cruzada_apunte';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Introducción al aprendizaje automático - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Introducción al aprendizaje automático - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    ¡Hola!
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocesamiento_2.html">Preprocesamiento de Datos Tabulares para Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Clustering_Kmeans.html">Clustering con K-Means</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="Reduccion_dimensionalidad_PCA_tsne_umap.html">PCA</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="clase_2_regresion_lineal_introduccion.html">Clase 2.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_1_Regresion_Lineal_Multiple.html">24 -Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_5_Cross_Validation_Regresion_Lineal_Multiple.html">2_5 - Cross Validation: Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_6_Prediccion_Precios_Casas_Regresion_Lineal_Multiple.html">2_6 - Ejercicio 5: Prediccion Precios Casas Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_7_underfitting_overfitting_example.html">Underfitting y Overfitting en Modelos Polinomiales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Clasificaci%C3%B3n_binaria.html">Métricas de evaluación en la clasificación</a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="3_1_Clasificacion_Enfermedad_Coronaria.html">31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_4_Clasificacion_Enfermedad_Coronaria_Evaluacion_Modelos.html">3_4_Evaluación del Modelo de Clasificación de pacientes con enfermedades coronarias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_networks_introduction.html">El perceptrón</a></li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/anadiedrichs/curso-aprendizaje-automatico" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/anadiedrichs/curso-aprendizaje-automatico/issues/new?title=Issue%20on%20page%20%2FValidación_cruzada_apunte.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Validación_cruzada_apunte.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Validación cruzada</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Validación cruzada</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lectura-introductoria">Lectura introductoria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-en-sklearn">Validacion cruzada en sklearn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-resumen">Un resumen</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-entre-kfold-y-shufflesplit-para-validacion-cruzada-en-sklearn">Diferencias entre KFold y ShuffleSplit para validación cruzada en sklearn</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kfold">KFold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shufflesplit">ShuffleSplit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-principales">Diferencias principales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplos-de-uso-mi-pequeno-machete">Ejemplos de uso (mi pequeño machete)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cual-esquema-de-cross-validation-utilizar">¿ Cuál esquema de cross-validation utilizar ?</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#piensa-y-responde">Piensa y responde</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a href="https://colab.research.google.com/github/anadiedrichs/curso-aprendizaje-automatico/blob/main/Validaci%C3%B3n_cruzada_apunte.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="validacion-cruzada">
+<h1>Validación cruzada<a class="headerlink" href="#validacion-cruzada" title="Link to this heading">#</a></h1>
+<p>Estado del apunte: elaboración en curso.</p>
+<p>Aprender los parámetros de una función de predicción y probarla con los mismos datos es un error metodológico: un modelo que simplemente repita las etiquetas de las muestras que acaba de analizar obtendrá una puntuación perfecta, pero no predecirá nada útil con datos aún no analizados. Esta situación se denomina sobreajuste. Para evitarlo, es habitual, al realizar un experimento de aprendizaje automático (supervisado), conservar parte de los datos disponibles como conjunto de prueba X_test, y_test. Cabe destacar que el término “experimento” no se limita a su uso académico, ya que incluso en entornos comerciales, el aprendizaje automático suele comenzar de forma experimental. A continuación, se presenta un diagrama de flujo de un flujo de trabajo típico de validación cruzada en el entrenamiento de modelos. Los mejores parámetros se pueden determinar mediante técnicas de búsqueda en cuadrícula (grid-search).</p>
+<p><img alt="Diagrama de flujo de entrenamiento de modelos" src="https://scikit-learn.org/stable/_images/grid_search_workflow.png" /></p>
+<p>Referencia: <a class="reference external" href="https://scikit-learn.org/stable/modules/cross_validation.html#">https://scikit-learn.org/stable/modules/cross_validation.html#</a></p>
+<section id="lectura-introductoria">
+<h2>Lectura introductoria<a class="headerlink" href="#lectura-introductoria" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://es.wikipedia.org/wiki/Validaci%C3%B3n_cruzada">https://es.wikipedia.org/wiki/Validación_cruzada</a></p>
+</section>
+<section id="validacion-cruzada-en-sklearn">
+<h2>Validacion cruzada en sklearn<a class="headerlink" href="#validacion-cruzada-en-sklearn" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://qu4nt.github.io/sklearn-doc-es/modules/cross_validation.html">https://qu4nt.github.io/sklearn-doc-es/modules/cross_validation.html</a></p>
+</section>
+<section id="un-resumen">
+<h2>Un resumen<a class="headerlink" href="#un-resumen" title="Link to this heading">#</a></h2>
+<section id="diferencias-entre-kfold-y-shufflesplit-para-validacion-cruzada-en-sklearn">
+<h3>Diferencias entre KFold y ShuffleSplit para validación cruzada en sklearn<a class="headerlink" href="#diferencias-entre-kfold-y-shufflesplit-para-validacion-cruzada-en-sklearn" title="Link to this heading">#</a></h3>
+<p>Tanto <code class="docutils literal notranslate"><span class="pre">KFold</span></code> como <code class="docutils literal notranslate"><span class="pre">ShuffleSplit</span></code> son estrategias de validación cruzada en scikit-learn, pero funcionan de manera diferente:</p>
+</section>
+</section>
+<section id="kfold">
+<h2>KFold<a class="headerlink" href="#kfold" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Cómo funciona</strong>: Divide el conjunto de datos en K particiones consecutivas (folds)</p></li>
+<li><p><strong>Características</strong>:</p>
+<ul>
+<li><p>Cada muestra aparece exactamente una vez en el conjunto de prueba</p></li>
+<li><p>Las particiones son bloques contiguos por defecto (a menos que se mezclen)</p></li>
+<li><p>Conserva el orden de las muestras a menos que se active <code class="docutils literal notranslate"><span class="pre">shuffle=True</span></code></p></li>
+<li><p>Ideal para conjuntos de datos pequeños donde quieres usar todos los datos tanto para entrenamiento como para prueba</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="K-fold cross validation" src="https://scikit-learn.org/stable/_images/grid_search_cross_validation.png" /></p>
+</section>
+<section id="shufflesplit">
+<h2>ShuffleSplit<a class="headerlink" href="#shufflesplit" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Cómo funciona</strong>: Divide los datos aleatoriamente en conjuntos de entrenamiento y prueba en cada iteración</p></li>
+<li><p><strong>Características</strong>:</p>
+<ul>
+<li><p>Cada iteración realiza una división aleatoria independiente</p></li>
+<li><p>Las muestras pueden aparecer múltiples veces en los conjuntos de prueba</p></li>
+<li><p>No garantiza que todas las muestras estarán en algún conjunto de prueba</p></li>
+<li><p>Ideal para conjuntos grandes o cuando necesitas control sobre los tamaños de train/test</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="diferencias-principales">
+<h2>Diferencias principales<a class="headerlink" href="#diferencias-principales" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Característica</p></th>
+<th class="head"><p>KFold</p></th>
+<th class="head"><p>ShuffleSplit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Uso de muestras</p></td>
+<td><p>Cada muestra se prueba 1 vez</p></td>
+<td><p>Muestras pueden probarse varias veces o nunca</p></td>
+</tr>
+<tr class="row-odd"><td><p>Orden</p></td>
+<td><p>Conservado (a menos que shuffle=True)</p></td>
+<td><p>Siempre aleatorio</p></td>
+</tr>
+<tr class="row-even"><td><p>Tamaños</p></td>
+<td><p>Particiones iguales (o casi)</p></td>
+<td><p>Tamaños personalizables de train/test</p></td>
+</tr>
+<tr class="row-odd"><td><p>Solapamiento</p></td>
+<td><p>Sin solapamiento entre folds</p></td>
+<td><p>Posible solapamiento en tests</p></td>
+</tr>
+<tr class="row-even"><td><p>Recomendado para</p></td>
+<td><p>Datasets pequeños</p></td>
+<td><p>Datasets grandes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="ejemplos-de-uso-mi-pequeno-machete">
+<h2>Ejemplos de uso (mi pequeño machete)<a class="headerlink" href="#ejemplos-de-uso-mi-pequeno-machete" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span><span class="p">,</span> <span class="n">ShuffleSplit</span>
+
+<span class="c1"># Ejemplo KFold (5 particiones)</span>
+<span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+    <span class="c1"># entrenar y evaluar modelo</span>
+
+<span class="c1"># Ejemplo ShuffleSplit (5 divisiones, 20% para test)</span>
+<span class="n">ss</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+    <span class="c1"># entrenar y evaluar modelo</span>
+</pre></div>
+</div>
+<p><strong>Tip</strong>: Elige <code class="docutils literal notranslate"><span class="pre">KFold</span></code> cuando necesites un muestreo exhaustivo (cada muestra se prueba exactamente una vez) y <code class="docutils literal notranslate"><span class="pre">ShuffleSplit</span></code> cuando prefieras mayor flexibilidad o trabajes con conjuntos de datos grandes.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="cual-esquema-de-cross-validation-utilizar">
+<h1>¿ Cuál esquema de cross-validation utilizar ?<a class="headerlink" href="#cual-esquema-de-cross-validation-utilizar" title="Link to this heading">#</a></h1>
+<p>La respuesta corta es <strong>depende</strong> de los datos.</p>
+<p>Sugiero que revises el capítulo del curso cross-validation choise del curso <a class="reference external" href="https://inria.github.io/scikit-learn-mooc/">https://inria.github.io/scikit-learn-mooc/</a></p>
+<p>a) <a class="reference external" href="https://inria.github.io/scikit-learn-mooc/python_scripts/cross_validation_stratification.html">https://inria.github.io/scikit-learn-mooc/python_scripts/cross_validation_stratification.html</a></p>
+<p>b) <a class="reference external" href="https://inria.github.io/scikit-learn-mooc/python_scripts/cross_validation_grouping.html">https://inria.github.io/scikit-learn-mooc/python_scripts/cross_validation_grouping.html</a></p>
+<p>c) <a class="reference external" href="https://inria.github.io/scikit-learn-mooc/python_scripts/cross_validation_time.html">https://inria.github.io/scikit-learn-mooc/python_scripts/cross_validation_time.html</a></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="piensa-y-responde">
+<h1>Piensa y responde<a class="headerlink" href="#piensa-y-responde" title="Link to this heading">#</a></h1>
+<p>A) ¿ cuál esquema de validación cruzada usarías si</p>
+<ol class="arabic simple">
+<li><p>tienes pocos datos? <em>Leave one out CV</em></p></li>
+<li><p>es un problema de regresión ? <em>kfold CV</em></p></li>
+<li><p>tu dataset tiene sus clases desbalanceadas? <em>CV estratificado</em></p></li>
+<li><p>tus datos tienen sus clases balanceadas ? *CV con shuffle = True *</p></li>
+<li><p>tus datos son NO i.i.d ? Explica y da ejemplos de este tipo de datos. <em>c)</em></p></li>
+</ol>
+<p>Para cualquiera de las respuestas, justifica de forma más completa.</p>
+<p>B) ¿se te ocurre algún otro caso no expuesto o presentado en este apunte o contemplado en las preguntas anteriores? De ser así, compártelo.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Validación cruzada</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lectura-introductoria">Lectura introductoria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-en-sklearn">Validacion cruzada en sklearn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-resumen">Un resumen</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-entre-kfold-y-shufflesplit-para-validacion-cruzada-en-sklearn">Diferencias entre KFold y ShuffleSplit para validación cruzada en sklearn</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kfold">KFold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shufflesplit">ShuffleSplit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-principales">Diferencias principales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplos-de-uso-mi-pequeno-machete">Ejemplos de uso (mi pequeño machete)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cual-esquema-de-cross-validation-utilizar">¿ Cuál esquema de cross-validation utilizar ?</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#piensa-y-responde">Piensa y responde</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ana Diedrichs
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2168 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Métricas de evaluación en la clasificación &#8212; Introducción al aprendizaje automático</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Clasificación_binaria';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias" href="3_1_Clasificacion_Enfermedad_Coronaria.html" />
+    <link rel="prev" title="Underfitting y Overfitting en Modelos Polinomiales" href="2_7_underfitting_overfitting_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Introducción al aprendizaje automático - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Introducción al aprendizaje automático - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    ¡Hola!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocesamiento_2.html">Preprocesamiento de Datos Tabulares para Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Clustering_Kmeans.html">Clustering con K-Means</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="Reduccion_dimensionalidad_PCA_tsne_umap.html">PCA</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="clase_2_regresion_lineal_introduccion.html">Clase 2.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_1_Regresion_Lineal_Multiple.html">24 -Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_5_Cross_Validation_Regresion_Lineal_Multiple.html">2_5 - Cross Validation: Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_6_Prediccion_Precios_Casas_Regresion_Lineal_Multiple.html">2_6 - Ejercicio 5: Prediccion Precios Casas Regresion Lineal Multiple</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_7_underfitting_overfitting_example.html">Underfitting y Overfitting en Modelos Polinomiales</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Métricas de evaluación en la clasificación</a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="3_1_Clasificacion_Enfermedad_Coronaria.html">31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_4_Clasificacion_Enfermedad_Coronaria_Evaluacion_Modelos.html">3_4_Evaluación del Modelo de Clasificación de pacientes con enfermedades coronarias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_networks_introduction.html">El perceptrón</a></li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/anadiedrichs/curso-aprendizaje-automatico" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/anadiedrichs/curso-aprendizaje-automatico/issues/new?title=Issue%20on%20page%20%2FClasificación_binaria.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Clasificación_binaria.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Métricas de evaluación en la clasificación</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Métricas de evaluación en la clasificación</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matriz-de-confusion">Matriz de confusión</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-de-la-matriz-de-confusion">Estructura de la matriz de confusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo">Ejemplo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-derivadas-de-la-matriz-de-confusion">Métricas derivadas de la matriz de confusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-precision">1. <strong>Precision (Precisión)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recall-sensibilidad-o-tasa-de-verdaderos-positivos">2. <strong>Recall (Sensibilidad o Tasa de Verdaderos Positivos)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-score">3. <strong>F1-score</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-exactitud">4. <strong>Accuracy (Exactitud)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#macro-average-promedio-macro">5. <strong>Macro Average (Promedio Macro)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-average-promedio-ponderado">6. <strong>Weighted Average (Promedio Ponderado)</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-binaria">Clasificación Binaria</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression-o-regresion-logistica">Logistic regression o regresión logística</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-dataset-iris">Ejemplo con dataset iris</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion">Interpretación:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Logistic Regression o regresión logística</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-sigmoide">2. <strong>Función sigmoide</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-funcion-sigmoide"><strong>Visualización de la función sigmoide</strong>:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#probabilidad-y-clasificacion">3. <strong>Probabilidad y clasificación</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-de-costo-log-loss">4. <strong>Función de costo (log loss)</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#log-loss-o-funcion-de-perdida">Log loss o función de pérdida</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dos-casos">Dos casos:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Interpretación:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ventajas-de-la-funcion-de-costo-logaritmica">Ventajas de la función de costo logarítmica:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-grafico">Ejemplo gráfico</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-en-regresion-logistica">5. <strong>Regularización en regresión logística</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-l2-ridge">Regularización L2 (Ridge):</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-l1-lasso">Regularización L1 (Lasso):</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-uso"><strong>Ejemplo de uso</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#svm">SVM</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-hiperplano"><strong>El hiperplano</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizacion-del-margen"><strong>Maximización del margen</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-no-separables-linealmente"><strong>Datos no separables linealmente</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-importantes-de-svc">Parámetros importantes de <code class="docutils literal notranslate"><span class="pre">SVC</span></code>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-visual"><strong>Ejemplo visual</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-diferentes-svms-en-el-dataset-iris">Ejemplo: diferentes SVMs en el dataset iris</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arboles-de-decision">Árboles de decisión</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-funcionan-los-arboles-de-decision">1. ¿Cómo funcionan los árboles de decisión?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropia">ENTROPIA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-de-la-entropia">Fórmula de la Entropía</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicacion-de-la-formula">Explicación de la Fórmula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplos">Ejemplos:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropia-y-arboles-de-decision">Entropía y Árboles de Decisión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Interpretación</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gini">GINI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-arboles-de-decision-con-sklearn">Implementación de Árboles de Decisión con <code class="docutils literal notranslate"><span class="pre">sklearn</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-importantes-en-arboles-de-decision">3. Parámetros Importantes en Árboles de Decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ventajas-y-desventajas-de-los-arboles-de-decision">4. Ventajas y Desventajas de los Árboles de Decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-arbol-de-decision">Visualización del Árbol de Decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arboles-de-decision-y-regularizacion">6. Árboles de Decisión y Regularización</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#knn">KNN</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion-al-modelo-k-nearest-neighbors-knn">Introducción al Modelo K-Nearest Neighbors (KNN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-funciona-knn">¿Cómo Funciona KNN?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proceso-de-clasificacion-con-knn">Proceso de Clasificación con KNN:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-intuitivo">Ejemplo Intuitivo:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-importantes-de-knn">Parámetros Importantes de KNN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ventajas-de-knn">Ventajas de KNN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desventajas-de-knn">Desventajas de KNN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-knn-en-python-usando-sklearn">Implementación de KNN en Python (usando <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-codigo">Interpretación del Código</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusión</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Ejemplos</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distintos-clasificadores-y-su-frontera-de-decision">Distintos clasificadores y su frontera de decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-dataset-breast-cancer">Caso dataset breast cancer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importar-librerias-necesarias">Importar librerías necesarias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-el-dataset">Cargar el dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dividir-los-datos-en-conjunto-de-entrenamiento-y-prueba">Dividir los datos en conjunto de entrenamiento y prueba</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engineering">feature engineering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-logistica">Regresión logística</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-vector-machine">Support Vector Machine</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arbol-de-decision">árbol de decisión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">K-Nearest Neighbors (KNN)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-de-digitos">Dataset de dígitos</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a href="https://colab.research.google.com/github/anadiedrichs/curso-aprendizaje-automatico/blob/main/Clasificaci%C3%B3n_binaria.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="metricas-de-evaluacion-en-la-clasificacion">
+<h1>Métricas de evaluación en la clasificación<a class="headerlink" href="#metricas-de-evaluacion-en-la-clasificacion" title="Link to this heading">#</a></h1>
+<section id="matriz-de-confusion">
+<h2>Matriz de confusión<a class="headerlink" href="#matriz-de-confusion" title="Link to this heading">#</a></h2>
+<p>La <strong>matriz de confusión</strong> es una herramienta clave para evaluar el rendimiento de un modelo de clasificación. Se utiliza para comparar las predicciones realizadas por el modelo con los valores reales en un conjunto de datos de prueba. Vamos a explicar como se organiza:</p>
+<section id="estructura-de-la-matriz-de-confusion">
+<h3>Estructura de la matriz de confusión<a class="headerlink" href="#estructura-de-la-matriz-de-confusion" title="Link to this heading">#</a></h3>
+<p>Para un problema de <strong>clasificación binaria</strong> (dos clases), la matriz de confusión es una tabla de 2x2 que organiza los resultados de las predicciones en cuatro categorías:</p>
+<ol class="arabic simple">
+<li><p><strong>Verdaderos Positivos (VP)</strong>: Son los casos en los que el modelo predijo correctamente la clase positiva.</p></li>
+<li><p><strong>Falsos Positivos (FP)</strong>: Son los casos en los que el modelo predijo la clase positiva incorrectamente (cuando en realidad era negativa). A esto también se le llama “error tipo I”.</p></li>
+<li><p><strong>Verdaderos Negativos (VN)</strong>: Son los casos en los que el modelo predijo correctamente la clase negativa.</p></li>
+<li><p><strong>Falsos Negativos (FN)</strong>: Son los casos en los que el modelo predijo la clase negativa incorrectamente (cuando en realidad era positiva). Esto se conoce como “error tipo II”.</p></li>
+</ol>
+</section>
+<section id="ejemplo">
+<h3>Ejemplo<a class="headerlink" href="#ejemplo" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p><strong>Predicción Positiva</strong></p></th>
+<th class="head"><p><strong>Predicción Negativa</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Clase Positiva</strong></p></td>
+<td><p>Verdaderos Positivos (VP)</p></td>
+<td><p>Falsos Negativos (FN)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Clase Negativa</strong></p></td>
+<td><p>Falsos Positivos (FP)</p></td>
+<td><p>Verdaderos Negativos (VN)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="metricas-derivadas-de-la-matriz-de-confusion">
+<h3>Métricas derivadas de la matriz de confusión<a class="headerlink" href="#metricas-derivadas-de-la-matriz-de-confusion" title="Link to this heading">#</a></h3>
+<p>A partir de la matriz de confusión, se pueden calcular varias métricas importantes:</p>
+<ol class="arabic simple">
+<li><p><strong>Exactitud (Accuracy)</strong>: Es el porcentaje de predicciones correctas (tanto positivas como negativas) sobre el total de predicciones.
+$<span class="math notranslate nohighlight">\(
+\text{Exactitud} = \frac{VP + VN}{VP + VN + FP + FN}
+\)</span>$</p></li>
+<li><p><strong>Precisión (Precision)</strong>: Es la proporción de predicciones positivas correctas respecto al total de predicciones positivas. Indica la calidad de las predicciones positivas.
+$<span class="math notranslate nohighlight">\(
+\text{Precisión} = \frac{VP}{VP + FP}
+\)</span>$</p></li>
+<li><p><strong>Sensibilidad o Recall (Tasa de Verdaderos Positivos)</strong>: Es la proporción de casos positivos correctamente identificados. Mide la capacidad del modelo para detectar la clase positiva.
+$<span class="math notranslate nohighlight">\(
+\text{Sensibilidad} = \frac{VP}{VP + FN}
+\)</span>$</p></li>
+<li><p><strong>Especificidad (Specificity)</strong>: Es la proporción de casos negativos correctamente identificados. Mide la capacidad del modelo para detectar la clase negativa.
+$<span class="math notranslate nohighlight">\(
+\text{Especificidad} = \frac{VN}{VN + FP}
+\)</span>$</p></li>
+<li><p><strong>F1-Score</strong>: Es una media armónica entre la precisión y la sensibilidad. Se usa cuando hay un balance desigual entre las clases o cuando se busca un equilibrio entre precisión y recall.
+$<span class="math notranslate nohighlight">\(
+F1 = 2 \times \frac{\text{Precisión} \times \text{Sensibilidad}}{\text{Precisión} + \text{Sensibilidad}}
+\)</span>$</p></li>
+</ol>
+</section>
+<section id="precision-precision">
+<h3>1. <strong>Precision (Precisión)</strong><a class="headerlink" href="#precision-precision" title="Link to this heading">#</a></h3>
+<p>La <strong>precisión</strong> mide la proporción de verdaderos positivos sobre el total de ejemplos predichos como positivos (verdaderos positivos + falsos positivos). Es decir, de todos los elementos que fueron clasificados como positivos, cuántos realmente lo son.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Precision} = \frac{\text{True Positives (TP)}}{\text{True Positives (TP)} + \text{False Positives (FP)}}
+\]</div>
+<ul class="simple">
+<li><p><strong>Alta precisión</strong> significa que pocos ejemplos negativos han sido clasificados incorrectamente como positivos.</p></li>
+<li><p>Se utiliza en situaciones donde los falsos positivos son más costosos o críticos que los falsos negativos.</p></li>
+</ul>
+</section>
+<section id="recall-sensibilidad-o-tasa-de-verdaderos-positivos">
+<h3>2. <strong>Recall (Sensibilidad o Tasa de Verdaderos Positivos)</strong><a class="headerlink" href="#recall-sensibilidad-o-tasa-de-verdaderos-positivos" title="Link to this heading">#</a></h3>
+<p>El <strong>recall</strong> mide la proporción de verdaderos positivos sobre el total de ejemplos que realmente son positivos (verdaderos positivos + falsos negativos). Es decir, de todos los ejemplos positivos que existen, cuántos fueron clasificados correctamente.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Recall} = \frac{\text{True Positives (TP)}}{\text{True Positives (TP)} + \text{False Negatives (FN)}}
+\]</div>
+<ul class="simple">
+<li><p><strong>Alto recall</strong> significa que se ha identificado la mayoría de los verdaderos positivos.</p></li>
+<li><p>Es importante en escenarios donde los falsos negativos son más costosos que los falsos positivos.</p></li>
+</ul>
+</section>
+<section id="f1-score">
+<h3>3. <strong>F1-score</strong><a class="headerlink" href="#f1-score" title="Link to this heading">#</a></h3>
+<p>El <strong>F1-score</strong> es la media armónica entre precision y recall. Se utiliza cuando hay un equilibrio entre la precisión y la sensibilidad, y se busca un solo valor que las combine.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+\]</div>
+<ul class="simple">
+<li><p>Un <strong>F1-score</strong> alto indica un buen balance entre precisión y recall.</p></li>
+<li><p>Es útil cuando las clases están desbalanceadas y se requiere tomar en cuenta tanto los falsos positivos como los falsos negativos.</p></li>
+</ul>
+</section>
+<section id="accuracy-exactitud">
+<h3>4. <strong>Accuracy (Exactitud)</strong><a class="headerlink" href="#accuracy-exactitud" title="Link to this heading">#</a></h3>
+<p>La <strong>exactitud</strong> mide la proporción de predicciones correctas sobre el total de ejemplos.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Accuracy} = \frac{\text{True Positives (TP)} + \text{True Negatives (TN)}}{\text{Total de ejemplos (TP + TN + FP + FN)}}
+\]</div>
+<ul class="simple">
+<li><p>La <strong>accuracy</strong> es útil cuando las clases están equilibradas, pero puede ser engañosa en casos con clases desbalanceadas, ya que un modelo que siempre predice la clase mayoritaria puede tener una accuracy alta.</p></li>
+</ul>
+</section>
+<section id="macro-average-promedio-macro">
+<h3>5. <strong>Macro Average (Promedio Macro)</strong><a class="headerlink" href="#macro-average-promedio-macro" title="Link to this heading">#</a></h3>
+<p>El <strong>macro average</strong> calcula la media aritmética de precision, recall y F1-score para cada clase de manera individual y luego toma el promedio sin tener en cuenta el tamaño de cada clase.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Macro Avg} = \frac{\text{Precision}_1 + \text{Precision}_2 + \dots + \text{Precision}_N}{N}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\text{(y similar para Recall y F1-score)}
+\]</div>
+<ul class="simple">
+<li><p>Da igual importancia a todas las clases, independientemente de su tamaño.</p></li>
+<li><p>Útil en casos donde las clases están desbalanceadas y se quiere tener una visión equitativa del rendimiento en todas las clases.</p></li>
+</ul>
+</section>
+<section id="weighted-average-promedio-ponderado">
+<h3>6. <strong>Weighted Average (Promedio Ponderado)</strong><a class="headerlink" href="#weighted-average-promedio-ponderado" title="Link to this heading">#</a></h3>
+<p>El <strong>weighted average</strong> calcula la media de precision, recall y F1-score, ponderada por el número de ejemplos de cada clase. Es decir, da más peso a las clases con más ejemplos.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Weighted Avg} = \frac{\sum_{i=1}^{N} \text{Precision}_i \times \text{n}_i}{\sum_{i=1}^{N} \text{n}_i}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\text{(y similar para Recall y F1-score)}
+\]</div>
+<ul class="simple">
+<li><p>Refleja mejor el rendimiento general del modelo, especialmente en datasets desbalanceados, ya que considera la proporción de ejemplos de cada clase.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="clasificacion-binaria">
+<h1>Clasificación Binaria<a class="headerlink" href="#clasificacion-binaria" title="Link to this heading">#</a></h1>
+<section id="logistic-regression-o-regresion-logistica">
+<h2>Logistic regression o regresión logística<a class="headerlink" href="#logistic-regression-o-regresion-logistica" title="Link to this heading">#</a></h2>
+<section id="ejemplo-con-dataset-iris">
+<h3>Ejemplo con dataset iris<a class="headerlink" href="#ejemplo-con-dataset-iris" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">f1_score</span>
+
+<span class="c1"># Cargar el conjunto de datos</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># Convertir en un problema de clasificación binaria (ej: clases 0 vs 1)</span>
+<span class="c1"># Nos quedamos solo con las clases 0 y 1 para hacer la clasificación binaria</span>
+<span class="n">binary_mask</span> <span class="o">=</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">2</span>
+<span class="n">X_binary</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">binary_mask</span><span class="p">]</span>
+<span class="n">y_binary</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">binary_mask</span><span class="p">]</span>
+
+<span class="c1"># Dividir los datos en conjunto de entrenamiento y prueba</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_binary</span><span class="p">,</span> <span class="n">y_binary</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Crear el clasificador</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+
+<span class="c1"># Entrenar el modelo</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Realizar predicciones</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_iris</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;sklearn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generar la matriz de confusión y calcular las métricas</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generar la matriz de confusión</span>
+<span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="c1"># Imprimir la matriz de confusión</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">conf_matrix</span><span class="p">)</span>
+
+<span class="c1"># Calcular las métricas</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="c1"># Mostrar las métricas</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exactitud (Accuracy): </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Precisión (Precision): </span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recall (Sensibilidad): </span><span class="si">{</span><span class="n">recall</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F1 Score: </span><span class="si">{</span><span class="n">f1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matriz de confusión:
+[[17  0]
+ [ 0 13]]
+Exactitud (Accuracy): 1.0
+Precisión (Precision): 1.0
+Recall (Sensibilidad): 1.0
+F1 Score: 1.0
+</pre></div>
+</div>
+</div>
+</div>
+<section id="interpretacion">
+<h4>Interpretación:<a class="headerlink" href="#interpretacion" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Matriz de Confusión</strong>:</p>
+<ul>
+<li><p>15 Verdaderos Negativos (clase 0 correctamente predicha).</p></li>
+<li><p>14 Verdaderos Positivos (clase 1 correctamente predicha).</p></li>
+<li><p>1 Falso Positivo (predijo clase 1, pero era clase 0).</p></li>
+<li><p>0 Falsos Negativos (predijo clase 0, pero era clase 1).</p></li>
+</ul>
+</li>
+<li><p><strong>Exactitud (Accuracy)</strong>: El modelo acertó en el 96.67% de los casos.</p></li>
+<li><p><strong>Precisión (Precision)</strong>: De todas las predicciones positivas, el 93.33% fueron correctas.</p></li>
+<li><p><strong>Sensibilidad (Recall)</strong>: El modelo identificó correctamente el 100% de los casos positivos.</p></li>
+<li><p><strong>F1-Score</strong>: Una medida de balance entre precisión y sensibilidad, alcanzando 0.965.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id1">
+<h2>Logistic Regression o regresión logística<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>La regresión logística es similar a la regresión lineal, pero adecuada para <strong>clasificación binaria</strong>.</p>
+<ul>
+<li><p><strong>Diferencia principal</strong>: En regresión lineal, el modelo predice un valor numérico continuo, mientras que en regresión logística, el objetivo es predecir una <strong>probabilidad</strong> de pertenecer a una clase (0 o 1).</p>
+<p>Ejemplo: En lugar de predecir una puntuación continua, como en regresión lineal, la regresión logística predice la probabilidad de que un tumor sea benigno (0) o maligno (1).</p>
+</li>
+</ul>
+<section id="funcion-sigmoide">
+<h3>2. <strong>Función sigmoide</strong><a class="headerlink" href="#funcion-sigmoide" title="Link to this heading">#</a></h3>
+<p>La <strong>función sigmoide</strong>, que es la clave en la regresión logística. Esta función convierte la salida continua de una combinación lineal de las características en una probabilidad entre 0 y 1.</p>
+<div class="math notranslate nohighlight">
+\[\sigma(z) = \frac{1}{1 + e^{-z}} \]</div>
+<p>Donde <span class="math notranslate nohighlight">\( z\)</span> es la combinación lineal de las características y los coeficientes del modelo.</p>
+<section id="visualizacion-de-la-funcion-sigmoide">
+<h4><strong>Visualización de la función sigmoide</strong>:<a class="headerlink" href="#visualizacion-de-la-funcion-sigmoide" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Definir la función sigmoide</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="c1"># Generar valores para z</span>
+<span class="n">z_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Calcular valores de la función sigmoide</span>
+<span class="n">sigmoid_values</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z_values</span><span class="p">)</span>
+
+<span class="c1"># Graficar la función sigmoide</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_values</span><span class="p">,</span> <span class="n">sigmoid_values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sigmoid Function&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Función Sigmoide&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;σ(z)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;σ(z)=0.5&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cfb8b2357a2f900bc5cdfe0360a1b5797462ee9cae3fefac811060daeae9cd7c.png" src="_images/cfb8b2357a2f900bc5cdfe0360a1b5797462ee9cae3fefac811060daeae9cd7c.png" />
+</div>
+</div>
+<p>Como se puede observar, la función transforma los valores de <span class="math notranslate nohighlight">\(z\)</span> a un rango entre 0 y 1. La línea roja horizontal representa el valor de 0.5, que es el umbral comúnmente utilizado en clasificación binaria para decidir entre las clases. Si <span class="math notranslate nohighlight">\(\sigma(z)\)</span> está por encima de 0.5, se clasifica como 1, y si está por debajo, se clasifica como 0.</p>
+</section>
+<section id="probabilidad-y-clasificacion">
+<h4>3. <strong>Probabilidad y clasificación</strong><a class="headerlink" href="#probabilidad-y-clasificacion" title="Link to this heading">#</a></h4>
+<p>La regresión logística predice una <strong>probabilidad</strong>. Al definir un umbral (por ejemplo, 0.5), puedes clasificar los resultados en una clase u otra:</p>
+<ul class="simple">
+<li><p>Si la probabilidad es mayor que 0.5, se clasifica como clase 1 (maligno).</p></li>
+<li><p>Si es menor que 0.5, se clasifica como clase 0 (benigno).</p></li>
+</ul>
+</section>
+<section id="funcion-de-costo-log-loss">
+<h4>4. <strong>Función de costo (log loss)</strong><a class="headerlink" href="#funcion-de-costo-log-loss" title="Link to this heading">#</a></h4>
+<p><strong>¿Por qué no usar error cuadrático en regresión logística?</strong></p>
+<p>En la <strong>regresión logística</strong>, la función de costo es diferente de la que se usa en la regresión lineal. En lugar de la <strong>suma de los errores cuadrados</strong>, se utiliza una función llamada <strong>log-loss</strong> o <strong>entropía cruzada</strong>. Esta función se ajusta mejor a la naturaleza probabilística de la regresión logística y es esencial para medir el rendimiento del modelo.</p>
+<p>En regresión logística, el objetivo es predecir una <strong>probabilidad</strong> entre 0 y 1, y luego tomar decisiones de clasificación en función de esa probabilidad. Si aplicamos la función de error cuadrático, podríamos obtener una curva no convexa, lo que haría difícil encontrar un mínimo global durante el proceso de optimización.</p>
+</section>
+<section id="log-loss-o-funcion-de-perdida">
+<h4>Log loss o función de pérdida<a class="headerlink" href="#log-loss-o-funcion-de-perdida" title="Link to this heading">#</a></h4>
+<p>En lugar de usar la suma de los errores cuadrados como en la regresión lineal, la regresión logística utiliza la <strong>función de pérdida logarítmica</strong> (log loss). Esta función mide la discrepancia entre las probabilidades predichas y las reales:</p>
+<div class="math notranslate nohighlight">
+\[J(\theta) = - \frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log(h_\theta(x^{(i)})) + (1 - y^{(i)}) \log(1 - h_\theta(x^{(i)})) \right]\]</div>
+<p><strong>Explicación de la fórmula</strong>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( m\)</span>: Número total de ejemplos en el conjunto de datos.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y^{(i)}\)</span>: El valor real (etiqueta) del ejemplo (i), que es 0 o 1 (binario).</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_\theta(x^{(i)})\)</span>: Es la probabilidad predicha por el modelo de que <span class="math notranslate nohighlight">\( x^{(i)}\)</span> pertenezca a la clase 1 (maligno en el ejemplo de cáncer de mama).</p></li>
+<li><p><span class="math notranslate nohighlight">\( h_\theta(x) = \sigma(\theta^T x) \)</span>, es decir, la <strong>función sigmoide</strong> aplicada a la combinación lineal de las características <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+</ul>
+</section>
+<section id="dos-casos">
+<h4>Dos casos:<a class="headerlink" href="#dos-casos" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p><strong>Si <span class="math notranslate nohighlight">\(y^{(i)} = 1\)</span></strong>: El término que queda es:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[- \log(h_\theta(x^{(i)}))\]</div>
+<p>Si el modelo predice una probabilidad alta para la clase 1, entonces <span class="math notranslate nohighlight">\( h_\theta(x^{(i)}) \)</span> será cercano a 1, y la pérdida será pequeña (cercana a 0). Pero si <span class="math notranslate nohighlight">\( h_\theta(x^{(i)}) \)</span> es cercano a 0, la pérdida será grande (ya que <span class="math notranslate nohighlight">\( \log(0)\)</span> tiende a <span class="math notranslate nohighlight">\(-\infty\)</span> ).</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Si <span class="math notranslate nohighlight">\(y^{(i)} = 0 \)</span></strong>: El término que queda es:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+- \log(1 - h_\theta(x^{(i)}))
+\]</div>
+<p>En este caso, si el modelo predice correctamente una probabilidad cercana a 0, el valor de <span class="math notranslate nohighlight">\( 1 - h_\theta(x^{(i)}) \)</span> será cercano a 1, y la pérdida será pequeña. Si el modelo predice incorrectamente una probabilidad cercana a 1, la pérdida será grande.</p>
+</section>
+</section>
+<section id="id2">
+<h3>Interpretación:<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>El objetivo del modelo es <strong>minimizar</strong> esta función de costo, lo que se traduce en predecir correctamente las clases asignando probabilidades altas a las clases verdaderas y bajas a las clases incorrectas.</p></li>
+<li><p>El costo es bajo cuando las predicciones del modelo son correctas (es decir, cuando predice 1 para ejemplos de clase 1, y 0 para ejemplos de clase 0), y es alto cuando predice incorrectamente.</p></li>
+</ul>
+</section>
+<section id="ventajas-de-la-funcion-de-costo-logaritmica">
+<h3>Ventajas de la función de costo logarítmica:<a class="headerlink" href="#ventajas-de-la-funcion-de-costo-logaritmica" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Convexidad</strong>: La función de costo logarítmica es convexa, lo que garantiza que haya un mínimo global, lo que facilita su optimización usando algoritmos como <strong>gradiente descendente</strong>.</p></li>
+<li><p><strong>Penalización adecuada</strong>: Penaliza más fuertemente los errores graves, lo que significa que si el modelo está muy seguro de una predicción incorrecta, la función de costo lo castigará severamente.</p></li>
+</ul>
+</section>
+<section id="ejemplo-grafico">
+<h3>Ejemplo gráfico<a class="headerlink" href="#ejemplo-grafico" title="Link to this heading">#</a></h3>
+<p>Podrías mostrarles a los estudiantes una gráfica que compare las predicciones del modelo con la función de costo para entender visualmente cómo penaliza los errores:</p>
+<ol class="arabic simple">
+<li><p>Cuando <span class="math notranslate nohighlight">\( y = 1 \)</span> y el modelo predice una probabilidad baja (cerca de 0), la pérdida es grande.</p></li>
+<li><p>Cuando <span class="math notranslate nohighlight">\( y = 0 \)</span> y el modelo predice una probabilidad alta (cerca de 1), la pérdida también es grande.</p></li>
+</ol>
+<section id="regularizacion-en-regresion-logistica">
+<h4>5. <strong>Regularización en regresión logística</strong><a class="headerlink" href="#regularizacion-en-regresion-logistica" title="Link to this heading">#</a></h4>
+<p>Aprovecha este punto para vincular con <strong>regularización</strong>, que ya han aprendido en otros modelos.</p>
+<section id="regularizacion-l2-ridge">
+<h5>Regularización L2 (Ridge):<a class="headerlink" href="#regularizacion-l2-ridge" title="Link to this heading">#</a></h5>
+<p>El modelo de regresión logística puede <strong>sobreajustarse</strong> (overfeatting) cuando hay muchas características irrelevantes o ruido en los datos, lo que lleva a predicciones menos precisas. Aquí es donde entra la regularización L2 (también llamada Ridge), que penaliza los coeficientes grandes para evitar sobreajuste:</p>
+<div class="math notranslate nohighlight">
+\[ J(\theta) = - \frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log(h_\theta(x^{(i)})) + (1 - y^{(i)}) \log(1 - h_\theta(x^{(i)})) \right] + \frac{\lambda}{2m} \sum_{j=1}^{n} \theta_j^2
+\]</div>
+<p>El término adicional <span class="math notranslate nohighlight">\( \frac{\lambda}{2m} \sum_{j=1}^{n} \theta_j^2 \)</span> es la penalización, donde <span class="math notranslate nohighlight">\( \lambda \)</span> controla la cantidad de regularización. Si <span class="math notranslate nohighlight">\( \lambda \)</span> es grande, penaliza más a los coeficientes altos, lo que reduce la complejidad del modelo.</p>
+</section>
+<section id="regularizacion-l1-lasso">
+<h5>Regularización L1 (Lasso):<a class="headerlink" href="#regularizacion-l1-lasso" title="Link to this heading">#</a></h5>
+<p>La regularización <strong>L1</strong>,  no solo evita el sobreajuste, sino que puede llevar a una <strong>selección de características</strong> al hacer que algunos coeficientes se vuelvan exactamente cero. Esta forma de regularización agrega el término:</p>
+<div class="math notranslate nohighlight">
+\[
+J(\theta) = - \frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log(h_\theta(x^{(i)})) + (1 - y^{(i)}) \log(1 - h_\theta(x^{(i)})) \right] + \frac{\lambda}{m} \sum_{j=1}^{n} |\theta_j|
+\]</div>
+<p><strong>L1</strong> fuerza a algunos coeficientes a ser exactamente cero, eliminando así features o variables menos relevantes, lo cual es útil en datasets con muchas variables.</p>
+</section>
+</section>
+<section id="ejemplo-de-uso">
+<h4><strong>Ejemplo de uso</strong><a class="headerlink" href="#ejemplo-de-uso" title="Link to this heading">#</a></h4>
+<p>Usando <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+
+<span class="c1"># Cargar datos</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_gaussian_quantiles</span>
+
+<span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span> <span class="o">=</span> <span class="n">make_gaussian_quantiles</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X2</span><span class="p">,</span> <span class="n">Y2</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n_informative</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1000, 10)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">X1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Y1</span>
+
+<span class="c1"># Dividir en conjuntos de entrenamiento y prueba</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Escalar los datos</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Modelo de regresión logística</span>
+<span class="c1"># por defecto usa l2</span>
+<span class="n">logreg</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">logreg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predicción</span>
+<span class="n">y_pred_log</span> <span class="o">=</span> <span class="n">logreg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+
+<span class="c1"># Evaluación</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy Logistic Regression: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_log</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_log</span><span class="p">))</span>
+
+<span class="c1"># Modelo de regresión logística con regularización L2</span>
+<span class="n">logreg_l2</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># C es el inverso de lambda, cuanto más pequeño, mayor es la regularización</span>
+<span class="n">logreg_l2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predicción</span>
+<span class="n">y_pred_l2</span> <span class="o">=</span> <span class="n">logreg_l2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+
+<span class="c1"># Evaluación</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy (L2): </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_l2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_l2</span><span class="p">))</span>
+
+<span class="c1"># Modelo de regresión logística con regularización L1</span>
+<span class="n">logreg_l1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;liblinear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">logreg_l1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predicción</span>
+<span class="n">y_pred_l1</span> <span class="o">=</span> <span class="n">logreg_l1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+
+<span class="c1"># Evaluación</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy (L1): </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_l1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_l1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy Logistic Regression: 0.48
+              precision    recall  f1-score   support
+
+           0       0.50      0.38      0.43       156
+           1       0.47      0.59      0.52       144
+
+    accuracy                           0.48       300
+   macro avg       0.48      0.48      0.48       300
+weighted avg       0.48      0.48      0.47       300
+
+Accuracy (L2): 0.48
+              precision    recall  f1-score   support
+
+           0       0.50      0.38      0.43       156
+           1       0.47      0.59      0.52       144
+
+    accuracy                           0.48       300
+   macro avg       0.48      0.48      0.48       300
+weighted avg       0.48      0.48      0.47       300
+
+Accuracy (L1): 0.5066666666666667
+              precision    recall  f1-score   support
+
+           0       0.53      0.49      0.51       156
+           1       0.49      0.53      0.51       144
+
+    accuracy                           0.51       300
+   macro avg       0.51      0.51      0.51       300
+weighted avg       0.51      0.51      0.51       300
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="svm">
+<h1>SVM<a class="headerlink" href="#svm" title="Link to this heading">#</a></h1>
+<p>SVM es un algoritmo de clasificación que se utiliza para encontrar un <strong>hiperplano óptimo</strong> que separa los datos en diferentes clases. Este hiperplano actúa como una “frontera” que clasifica correctamente a los ejemplos de datos en sus respectivas clases.</p>
+<section id="el-hiperplano">
+<h2><strong>El hiperplano</strong><a class="headerlink" href="#el-hiperplano" title="Link to this heading">#</a></h2>
+<p>Para simplificar, en dos dimensiones (2D), el hiperplano es solo una línea. En más dimensiones, este se convierte en una superficie o plano. La idea detrás de SVM es encontrar el hiperplano que <strong>maximice la distancia</strong> (margen) entre las dos clases, asegurándose de que los puntos más cercanos de ambas clases (llamados <strong>vectores de soporte</strong>) estén lo más lejos posible de este hiperplano.</p>
+</section>
+<section id="maximizacion-del-margen">
+<h2><strong>Maximización del margen</strong><a class="headerlink" href="#maximizacion-del-margen" title="Link to this heading">#</a></h2>
+<p>El margen es la distancia entre el hiperplano y los vectores de soporte. SVM busca maximizar este margen para hacer la clasificación más robusta. Cuanto más grande sea el margen, más confianza tiene el modelo en su clasificación, lo que mejora su capacidad de generalización a nuevos datos.</p>
+</section>
+<section id="datos-no-separables-linealmente">
+<h2><strong>Datos no separables linealmente</strong><a class="headerlink" href="#datos-no-separables-linealmente" title="Link to this heading">#</a></h2>
+<p>En muchos casos, los datos no pueden ser separados perfectamente por una línea (o hiperplano) recta. Para resolver este problema, SVM utiliza dos estrategias:</p>
+<ul class="simple">
+<li><p><strong>Margen suave (Soft Margin):</strong> Permite que algunos puntos de datos queden mal clasificados si esto ayuda a obtener un margen más grande.</p></li>
+<li><p><strong>Transformación de características (Kernel):</strong> SVM puede aplicar una transformación a los datos para proyectarlos a un espacio de mayor dimensión, donde un hiperplano puede separar los datos. Esto se logra usando funciones kernel, como el <strong>kernel radial (RBF)</strong> o el <strong>kernel polinomial</strong>.</p></li>
+</ul>
+</section>
+<section id="parametros-importantes-de-svc">
+<h2>Parámetros importantes de <code class="docutils literal notranslate"><span class="pre">SVC</span></code>:<a class="headerlink" href="#parametros-importantes-de-svc" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>C</strong>: Controla la penalización de los errores de clasificación. Un valor bajo de <code class="docutils literal notranslate"><span class="pre">C</span></code> permite que el modelo tenga un margen más amplio pero cometa más errores (generaliza mejor), mientras que un valor alto de <code class="docutils literal notranslate"><span class="pre">C</span></code> penaliza más los errores y hace que el margen sea más ajustado.</p></li>
+<li><p><strong>kernel</strong>: Define el tipo de kernel que transforma los datos en un espacio de mayor dimensión si es necesario. Los más comunes son:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'linear'</span></code>: Para datos separables linealmente.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'poly'</span></code>: Kernel polinomial.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'rbf'</span></code>: Kernel radial, útil para datos que no son linealmente separables.</p></li>
+</ul>
+</li>
+<li><p><strong>gamma</strong>: Solo para kernels <code class="docutils literal notranslate"><span class="pre">'rbf'</span></code>, <code class="docutils literal notranslate"><span class="pre">'poly'</span></code>, y <code class="docutils literal notranslate"><span class="pre">'sigmoid'</span></code>. Controla cómo de lejos alcanza la influencia de un solo ejemplo de entrenamiento. Valores pequeños implican mayor alcance, mientras que valores grandes lo limitan.</p></li>
+</ul>
+</section>
+<section id="ejemplo-visual">
+<h2><strong>Ejemplo visual</strong><a class="headerlink" href="#ejemplo-visual" title="Link to this heading">#</a></h2>
+<p>Imagina que tienes dos tipos de puntos en un gráfico 2D: puntos rojos y puntos azules. La tarea es encontrar una línea que divida claramente los dos colores. SVM busca la mejor línea posible que no solo los divida, sino que lo haga maximizando la distancia entre esa línea y los puntos más cercanos de cada color.</p>
+<p>Con un ejemplo tomado de (<a class="reference external" href="https://scikit-learn.org/stable/auto_examples/svm/plot_linearsvc_support_vectors.html#sphx-glr-auto-examples-svm-plot-linearsvc-support-vectors-py">https://scikit-learn.org/stable/auto_examples/svm/plot_linearsvc_support_vectors.html#sphx-glr-auto-examples-svm-plot-linearsvc-support-vectors-py</a>) observaremos esta frontera de decisión de SVM</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSVC</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">C</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">]):</span>
+    <span class="c1"># &quot;hinge&quot; is the standard SVM loss</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;hinge&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="c1"># obtain the support vectors through the decision function</span>
+    <span class="n">decision_function</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="c1"># we can also calculate the decision function manually</span>
+    <span class="c1"># decision_function = np.dot(X, clf.coef_[0]) + clf.intercept_[0]</span>
+    <span class="c1"># The support vectors are the samples that lie within the margin</span>
+    <span class="c1"># boundaries, whose size is conventionally constrained to 1</span>
+    <span class="n">support_vector_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">decision_function</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-15</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">support_vectors</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">support_vector_indices</span><span class="p">]</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Paired</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+        <span class="n">clf</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">grid_resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;contour&quot;</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+        <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">linestyles</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">support_vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">support_vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">facecolors</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;C=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">C</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/74352a6d72fe4bf90212269025423015c62301aee1ffc92a1a801b7e8e1006a3.png" src="_images/74352a6d72fe4bf90212269025423015c62301aee1ffc92a1a801b7e8e1006a3.png" />
+</div>
+</div>
+</section>
+<section id="ejemplo-diferentes-svms-en-el-dataset-iris">
+<h2>Ejemplo: diferentes SVMs en el dataset iris<a class="headerlink" href="#ejemplo-diferentes-svms-en-el-dataset-iris" title="Link to this heading">#</a></h2>
+<p>Ejemplo tomado de:</p>
+<p><a class="reference external" href="https://scikit-learn.org/stable/auto_examples/svm/plot_iris_svc.html#sphx-glr-auto-examples-svm-plot-iris-svc-py">https://scikit-learn.org/stable/auto_examples/svm/plot_iris_svc.html#sphx-glr-auto-examples-svm-plot-iris-svc-py</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">svm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+
+<span class="c1"># import some data to play with</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="c1"># Take the first two features. We could avoid this by using a two-dim dataset</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># we create an instance of SVM and fit out data. We do not scale our</span>
+<span class="c1"># data since we want to plot the support vectors</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># SVM regularization parameter</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">),</span>
+    <span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+    <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">),</span>
+    <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="n">models</span><span class="p">)</span>
+
+<span class="c1"># title for the plots</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;SVC with linear kernel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LinearSVC (linear kernel)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SVC with RBF kernel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SVC with polynomial (degree 3) kernel&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Set-up 2x2 grid for plotting.</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">sub</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+
+<span class="n">X0</span><span class="p">,</span> <span class="n">X1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">clf</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+        <span class="n">clf</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/73ad3c6b47f2593781d8d57372511427931282bacfe99436526de305106e7898.png" src="_images/73ad3c6b47f2593781d8d57372511427931282bacfe99436526de305106e7898.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="arboles-de-decision">
+<h1>Árboles de decisión<a class="headerlink" href="#arboles-de-decision" title="Link to this heading">#</a></h1>
+<p>Los <strong>árboles de decisión</strong> son un tipo de algoritmo de aprendizaje supervisado que se utilizan tanto para problemas de clasificación como de regresión. Son uno de los modelos más intuitivos y fáciles de interpretar, ya que funcionan como una estructura de árbol en la que cada nodo interno representa una <strong>pregunta</strong> sobre una característica, y cada rama representa el resultado de esa pregunta, conduciendo a nodos hijos que a su vez hacen nuevas preguntas o llegan a una predicción final en las <strong>hojas</strong> del árbol.</p>
+<p>En este caso, nos enfocaremos en <strong>árboles de decisión para clasificación</strong> usando la implementación de <strong><code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code></strong> de la librería <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p>
+<section id="como-funcionan-los-arboles-de-decision">
+<h2>1. ¿Cómo funcionan los árboles de decisión?<a class="headerlink" href="#como-funcionan-los-arboles-de-decision" title="Link to this heading">#</a></h2>
+<p>Los árboles de decisión dividen iterativamente el conjunto de datos en <strong>subconjuntos más homogéneos</strong>, basándose en alguna característica de los datos. Cada división se hace seleccionando la característica que proporciona la mayor <strong>información</strong> o la mejor <strong>reducción de impureza</strong>. Los principales conceptos que utilizan los árboles para dividir los datos incluyen:</p>
+<ul class="simple">
+<li><p><strong>Gini Impurity</strong>: Es una métrica de la pureza de un nodo. Si todas las instancias en el nodo pertenecen a la misma clase, entonces la impureza de Gini es cero. El árbol selecciona características y umbrales que reducen la impureza.</p></li>
+<li><p><strong>Entropía e Información Ganada</strong>: También se puede usar la entropía, que mide el desorden o la incertidumbre de un conjunto de datos. La <strong>información ganada</strong> se calcula como la reducción en la entropía después de una división.</p></li>
+</ul>
+<p>A través de este proceso de división, el árbol sigue ramificándose hasta que se alcanzan condiciones de parada, como un número mínimo de ejemplos en una hoja o una profundidad máxima del árbol.</p>
+<section id="entropia">
+<h3>ENTROPIA<a class="headerlink" href="#entropia" title="Link to this heading">#</a></h3>
+<p>La <strong>entropía</strong> es una de las métricas que se utilizan en los árboles de decisión para evaluar la <strong>pureza</strong> o <strong>impureza</strong> de un nodo. Se emplea principalmente cuando el criterio de división del árbol es la <strong>ganancia de información</strong>. La entropía mide la incertidumbre o el desorden en los datos de un nodo y se utiliza para determinar cómo se debe dividir el nodo para obtener subconjuntos más homogéneos.</p>
+</section>
+<section id="formula-de-la-entropia">
+<h3>Fórmula de la Entropía<a class="headerlink" href="#formula-de-la-entropia" title="Link to this heading">#</a></h3>
+<p>La fórmula de la <strong>entropía</strong> para un nodo es la siguiente:</p>
+<div class="math notranslate nohighlight">
+\[
+H(p) = - \sum_{i=1}^{C} p_i \log_2(p_i)
+\]</div>
+<p>Donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( H(p) \)</span> es la entropía del nodo.</p></li>
+<li><p><span class="math notranslate nohighlight">\( C \)</span> es el número de clases posibles (por ejemplo, 2 para clasificación binaria).</p></li>
+<li><p><span class="math notranslate nohighlight">\( p_i \)</span> es la proporción de ejemplos pertenecientes a la clase (i) en el nodo.</p></li>
+</ul>
+</section>
+<section id="explicacion-de-la-formula">
+<h3>Explicación de la Fórmula<a class="headerlink" href="#explicacion-de-la-formula" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong><span class="math notranslate nohighlight">\( p_i \)</span></strong>: Es la probabilidad (o frecuencia relativa) de que un ejemplo en el nodo pertenezca a la clase <span class="math notranslate nohighlight">\( i \)</span>. Para una clase <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(p_i\)</span> se calcula como:</p>
+<div class="math notranslate nohighlight">
+\[
+   p_i = \frac{\text{número de ejemplos de la clase } i}{\text{total de ejemplos en el nodo}}
+   \]</div>
+</li>
+<li><p><strong><span class="math notranslate nohighlight">\( \log_2(p_i) \)</span></strong>: Es la función logarítmica en base 2 aplicada a la probabilidad <span class="math notranslate nohighlight">\( p_i\)</span>. La elección de la base 2 asegura que la entropía esté medida en <strong>bits</strong>.</p></li>
+<li><p><strong>Suma</strong>: La entropía es una suma ponderada de los valores de <span class="math notranslate nohighlight">\( p_i \log_2(p_i) \)</span> para todas las clases. El término negativo asegura que la entropía sea un valor no negativo, ya que <span class="math notranslate nohighlight">\( p_i \log_2(p_i) \)</span> es negativo para <span class="math notranslate nohighlight">\( 0 &lt; p_i &lt; 1 \)</span>.</p></li>
+</ol>
+</section>
+<section id="ejemplos">
+<h3>Ejemplos:<a class="headerlink" href="#ejemplos" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>Si todos los ejemplos en un nodo pertenecen a una sola clase, es decir, el nodo es <strong>puro</strong>, la entropía es cero. Esto es porque la incertidumbre es mínima: sabemos con certeza que todos los ejemplos pertenecen a esa clase. En este caso, <span class="math notranslate nohighlight">\( p_i \)</span> sería 1 para una clase y 0 para las demás.</p>
+<div class="math notranslate nohighlight">
+\[
+  H(p) = - (1 \log_2(1) + 0 \log_2(0)) = 0
+  \]</div>
+</li>
+<li><p>Si los ejemplos se dividen equitativamente entre las clases (por ejemplo, en una clasificación binaria, la mitad de los ejemplos pertenecen a una clase y la otra mitad a la otra), la entropía es máxima, porque hay más incertidumbre (el desorden es mayor).</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  H(p) = -\left( \frac{1}{2} \log_2\left(\frac{1}{2}\right) + \frac{1}{2} \log_2\left(\frac{1}{2}\right) \right) = 1
+ \]</div>
+</section>
+<section id="entropia-y-arboles-de-decision">
+<h3>Entropía y Árboles de Decisión<a class="headerlink" href="#entropia-y-arboles-de-decision" title="Link to this heading">#</a></h3>
+<p>El objetivo del árbol de decisión es reducir la entropía en cada división del nodo. Esto se logra seleccionando las características y umbrales que maximizan la <strong>ganancia de información</strong> (es decir, la reducción en entropía). La ganancia de información se calcula como:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Ganancia de información} = H(\text{padre}) - \sum_{\text{hijos}} \frac{n_{\text{hijo}}}{n_{\text{padre}}} H(\text{hijo})
+\]</div>
+<p>Donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( H(\text{padre}) \)</span> es la entropía del nodo antes de la división.</p></li>
+<li><p><span class="math notranslate nohighlight">\( H(\text{hijo})\)</span> es la entropía de cada nodo hijo después de la división.</p></li>
+<li><p><span class="math notranslate nohighlight">\( n_{\text{hijo}} \)</span> es el número de ejemplos en el nodo hijo y <span class="math notranslate nohighlight">\( n_{\text{padre}} \)</span> es el número de ejemplos en el nodo padre.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Interpretación<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Mayor ganancia de información</strong> significa que la división resultante tiene subconjuntos más homogéneos (menos desorden, menor entropía).</p></li>
+<li><p><strong>Entropía baja</strong> indica que los datos están organizados de forma más “ordenada” o que la clase predominante en ese nodo es más clara.</p></li>
+</ul>
+<p>Concluyendo, la entropía mide la incertidumbre o el desorden dentro de un conjunto de datos, y los árboles de decisión intentan minimizar esa incertidumbre en cada paso, eligiendo las divisiones que reduzcan la entropía lo máximo posible.</p>
+</section>
+</section>
+<section id="gini">
+<h2>GINI<a class="headerlink" href="#gini" title="Link to this heading">#</a></h2>
+</section>
+<section id="implementacion-de-arboles-de-decision-con-sklearn">
+<h2>Implementación de Árboles de Decisión con <code class="docutils literal notranslate"><span class="pre">sklearn</span></code><a class="headerlink" href="#implementacion-de-arboles-de-decision-con-sklearn" title="Link to this heading">#</a></h2>
+<p>Para implementar un árbol de decisión en Python, podemos utilizar la clase <code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code> de <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>. A continuación se muestra un ejemplo básico de cómo entrenar un árbol de decisión y hacer predicciones.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+
+<span class="c1"># Cargar el dataset de cáncer de mama</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># Dividir los datos en entrenamiento y prueba</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Crear el modelo de Árbol de Decisión</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Entrenar el modelo</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Hacer predicciones</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Evaluar el rendimiento del modelo</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy: 0.9415204678362573
+              precision    recall  f1-score   support
+
+           0       0.90      0.95      0.92        63
+           1       0.97      0.94      0.95       108
+
+    accuracy                           0.94       171
+   macro avg       0.93      0.94      0.94       171
+weighted avg       0.94      0.94      0.94       171
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="parametros-importantes-en-arboles-de-decision">
+<h2>3. Parámetros Importantes en Árboles de Decisión<a class="headerlink" href="#parametros-importantes-en-arboles-de-decision" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code> en <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> permite ajustar varios hiperparámetros que controlan el comportamiento y la complejidad del modelo. A continuación se presentan algunos de los más importantes:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">criterion</span></code></strong>: Especifica la métrica utilizada para evaluar la calidad de una división. Los valores comunes son <code class="docutils literal notranslate"><span class="pre">&quot;gini&quot;</span></code> (impureza de Gini) y <code class="docutils literal notranslate"><span class="pre">&quot;entropy&quot;</span></code> (entropía para el cálculo de la información ganada).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">max_depth</span></code></strong>: Controla la <strong>profundidad máxima</strong> del árbol. Un árbol muy profundo puede ajustarse demasiado a los datos de entrenamiento, lo que provoca un <strong>overfitting</strong>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code></strong>: El número mínimo de muestras que un nodo debe tener para que se divida. Aumentar este valor puede prevenir que el árbol se ajuste demasiado a los datos de entrenamiento.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code></strong>: El número mínimo de muestras que debe tener una hoja. Esto también ayuda a controlar el sobreajuste.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">max_features</span></code></strong>: El número máximo de características a considerar al hacer divisiones en cada nodo. Esto puede acelerar el entrenamiento y hacer el modelo más robusto.</p></li>
+</ul>
+</section>
+<section id="ventajas-y-desventajas-de-los-arboles-de-decision">
+<h2>4. Ventajas y Desventajas de los Árboles de Decisión<a class="headerlink" href="#ventajas-y-desventajas-de-los-arboles-de-decision" title="Link to this heading">#</a></h2>
+<p><strong>Ventajas</strong>:</p>
+<ul class="simple">
+<li><p><strong>Fáciles de interpretar</strong>: La estructura de un árbol puede ser visualizada y explicada fácilmente, lo que los hace muy intuitivos.</p></li>
+<li><p><strong>Requieren poca preparación de los datos</strong>: No necesitan que las características estén escaladas o normalizadas, y pueden trabajar con datos categóricos y continuos.</p></li>
+<li><p><strong>No lineales</strong>: Pueden capturar relaciones no lineales entre las características y el resultado.</p></li>
+</ul>
+<p><strong>Desventajas</strong>:</p>
+<ul class="simple">
+<li><p><strong>Sobreajuste</strong>: Un árbol de decisión sin restricciones puede ser muy profundo y ajustarse demasiado a los datos de entrenamiento, capturando ruido en lugar de patrones reales.</p></li>
+<li><p><strong>Inestabilidad</strong>: Pequeños cambios en los datos pueden generar árboles muy diferentes.</p></li>
+<li><p><strong>Predicciones menos precisas</strong>: En comparación con modelos más complejos (como Random Forests o Boosting), los árboles de decisión individuales pueden no tener tanta capacidad predictiva.</p></li>
+</ul>
+</section>
+<section id="visualizacion-del-arbol-de-decision">
+<h2>Visualización del Árbol de Decisión<a class="headerlink" href="#visualizacion-del-arbol-de-decision" title="Link to this heading">#</a></h2>
+<p>Una de las grandes ventajas de los árboles de decisión es su capacidad para ser visualizados. Esto es útil tanto para explicar el comportamiento del modelo como para identificar qué características son más importantes para la toma de decisiones.</p>
+<p>Podemos usar la función <code class="docutils literal notranslate"><span class="pre">plot_tree</span></code> para visualizar el árbol:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_tree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Visualizar el árbol de decisión</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span> <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/61260be75c8f370b046e4df47192d7c5b391ff5d4bd2ee24d3a25615c267bfe4.png" src="_images/61260be75c8f370b046e4df47192d7c5b391ff5d4bd2ee24d3a25615c267bfe4.png" />
+</div>
+</div>
+</section>
+<section id="arboles-de-decision-y-regularizacion">
+<h2>6. Árboles de Decisión y Regularización<a class="headerlink" href="#arboles-de-decision-y-regularizacion" title="Link to this heading">#</a></h2>
+<p>Para evitar el sobreajuste, los árboles de decisión deben ser regularizados. Existen varias formas de regularizar un árbol:</p>
+<ul class="simple">
+<li><p><strong>Limitar la profundidad del árbol</strong> (<code class="docutils literal notranslate"><span class="pre">max_depth</span></code>).</p></li>
+<li><p><strong>Aumentar el número mínimo de muestras por nodo</strong> (<code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>, <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>).</p></li>
+<li><p><strong>Pruning</strong>: Aunque no está implementado directamente en <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, el <strong>poda de árboles</strong> es una técnica que reduce el tamaño del árbol eliminando ramas que no tienen un impacto significativo en la predicción final.</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="knn">
+<h1>KNN<a class="headerlink" href="#knn" title="Link to this heading">#</a></h1>
+<section id="introduccion-al-modelo-k-nearest-neighbors-knn">
+<h2>Introducción al Modelo K-Nearest Neighbors (KNN)<a class="headerlink" href="#introduccion-al-modelo-k-nearest-neighbors-knn" title="Link to this heading">#</a></h2>
+<p>El modelo <strong>K-Nearest Neighbors (KNN)</strong> es un algoritmo de <strong>aprendizaje supervisado</strong> utilizado para problemas de clasificación y regresión. En el caso de clasificación, KNN es uno de los modelos más simples y efectivos cuando se tienen datos bien distribuidos. Es particularmente útil cuando no se quiere hacer ninguna suposición sobre la distribución subyacente de los datos, ya que se basa en la proximidad de las observaciones entre sí.</p>
+</section>
+<section id="como-funciona-knn">
+<h2>¿Cómo Funciona KNN?<a class="headerlink" href="#como-funciona-knn" title="Link to this heading">#</a></h2>
+<p>El principio básico de KNN es bastante sencillo: para clasificar una nueva observación, el algoritmo busca los <strong>k vecinos más cercanos</strong> en el conjunto de datos de entrenamiento y asigna la clase más común entre esos vecinos a la nueva observación. En otras palabras, KNN clasifica un nuevo punto basándose en las clases de los puntos de entrenamiento más cercanos a él.</p>
+</section>
+<section id="proceso-de-clasificacion-con-knn">
+<h2>Proceso de Clasificación con KNN:<a class="headerlink" href="#proceso-de-clasificacion-con-knn" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Selección del parámetro <span class="math notranslate nohighlight">\(k\)</span></strong>:</p>
+<ul class="simple">
+<li><p>El primer paso es elegir el número de vecinos <span class="math notranslate nohighlight">\(k\)</span> que considerará el modelo. Este es un hiperparámetro importante que debe ser ajustado dependiendo del conjunto de datos.</p></li>
+<li><p>Un valor pequeño de <span class="math notranslate nohighlight">\(k\)</span> puede hacer que el modelo sea más sensible al ruido (sobreajuste), mientras que un valor demasiado grande de <span class="math notranslate nohighlight">\(k\)</span> puede hacer que el modelo no capte bien las relaciones locales (subajuste).</p></li>
+</ul>
+</li>
+<li><p><strong>Medición de la distancia</strong>:</p>
+<ul class="simple">
+<li><p>KNN clasifica las nuevas instancias según su <strong>distancia</strong> a las instancias en el conjunto de datos de entrenamiento. Las distancias más comunes utilizadas son:</p>
+<ul>
+<li><p><strong>Distancia Euclidiana</strong> (la más común):
+$<span class="math notranslate nohighlight">\(
+d(p, q) = \sqrt{ \sum_{i=1}^{n} (p_i - q_i)^2 }
+\)</span>$</p></li>
+<li><p><strong>Distancia Manhattan</strong> (suma de valores absolutos):
+$<span class="math notranslate nohighlight">\(
+d(p, q) = \sum_{i=1}^{n} |p_i - q_i|
+\)</span>$</p></li>
+<li><p><strong>Distancia de Minkowski</strong>: Es una generalización de las anteriores.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Búsqueda de los k vecinos más cercanos</strong>:</p>
+<ul class="simple">
+<li><p>Una vez seleccionada la métrica de distancia, KNN encuentra los <strong>k puntos de entrenamiento</strong> que están más cerca de la nueva instancia.</p></li>
+</ul>
+</li>
+<li><p><strong>Asignación de clase</strong>:</p>
+<ul class="simple">
+<li><p>Después de identificar los <span class="math notranslate nohighlight">\(k\)</span> vecinos más cercanos, el algoritmo cuenta cuántos vecinos pertenecen a cada clase.</p></li>
+<li><p>La clase que tiene <strong>mayoría</strong> entre los vecinos más cercanos se asigna como la clase de la nueva instancia.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="ejemplo-intuitivo">
+<h2>Ejemplo Intuitivo:<a class="headerlink" href="#ejemplo-intuitivo" title="Link to this heading">#</a></h2>
+<p>Imagina que tienes un gráfico con puntos representando dos clases, digamos, círculos azules y triángulos rojos. Si quieres clasificar un nuevo punto que no tiene etiqueta, el algoritmo KNN busca los <span class="math notranslate nohighlight">\(k\)</span> puntos más cercanos a él. Si la mayoría de esos puntos son círculos azules, el nuevo punto será clasificado como círculo azul; si la mayoría son triángulos rojos, el nuevo punto será clasificado como triángulo rojo.</p>
+</section>
+<section id="parametros-importantes-de-knn">
+<h2>Parámetros Importantes de KNN<a class="headerlink" href="#parametros-importantes-de-knn" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Número de vecinos (k)</strong>:</p>
+<ul class="simple">
+<li><p>Es el parámetro más importante. Un <span class="math notranslate nohighlight">\(k\)</span> pequeño puede llevar a sobreajuste (ya que puede captar ruido en los datos), mientras que un <span class="math notranslate nohighlight">\(k\)</span> grande puede causar subajuste (perder información local).</p></li>
+</ul>
+</li>
+<li><p><strong>Métrica de distancia</strong>:</p>
+<ul class="simple">
+<li><p>La métrica utilizada para medir la cercanía entre los puntos puede influir en el rendimiento del algoritmo. La distancia euclidiana es común, pero otras distancias pueden ser útiles dependiendo de la naturaleza de los datos.</p></li>
+</ul>
+</li>
+<li><p><strong>Ponderación de los vecinos</strong>:</p>
+<ul class="simple">
+<li><p>Se puede ponderar a los vecinos según la distancia. Por ejemplo, se puede dar mayor peso a los vecinos más cercanos, en lugar de simplemente contar cuántos vecinos pertenecen a cada clase. Esto se conoce como <strong>KNN ponderado</strong>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="ventajas-de-knn">
+<h2>Ventajas de KNN<a class="headerlink" href="#ventajas-de-knn" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Simplicidad</strong>: KNN es uno de los algoritmos más simples de entender e implementar. No requiere entrenamiento complejo, ya que simplemente almacena el conjunto de datos de entrenamiento.</p></li>
+<li><p><strong>No paramétrico</strong>: KNN no asume ninguna suposición sobre la distribución subyacente de los datos, lo que lo hace flexible para una gran variedad de problemas.</p></li>
+<li><p><strong>Buena para datos pequeños</strong>: En conjuntos de datos pequeños y con buena separación entre clases, KNN puede funcionar de manera excelente.</p></li>
+</ol>
+</section>
+<section id="desventajas-de-knn">
+<h2>Desventajas de KNN<a class="headerlink" href="#desventajas-de-knn" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Costo computacional</strong>: A medida que crece el tamaño del conjunto de datos, el algoritmo puede volverse <strong>lento</strong> debido a que debe calcular las distancias para cada punto de prueba contra cada punto de entrenamiento.</p></li>
+<li><p><strong>Sensibilidad a la escala</strong>: Como KNN utiliza distancias, es sensible a la escala de los datos. Si una característica tiene valores mucho más grandes que otras, dominará las distancias. Por eso, es importante <strong>escalar</strong> o <strong>normalizar</strong> las características antes de usar KNN.</p></li>
+<li><p><strong>Sensibilidad al ruido</strong>: KNN puede verse afectado por datos atípicos o ruido, ya que puede considerar estos puntos como vecinos cercanos y, por lo tanto, tomar decisiones incorrectas.</p></li>
+</ol>
+</section>
+<section id="implementacion-de-knn-en-python-usando-sklearn">
+<h2>Implementación de KNN en Python (usando <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>)<a class="headerlink" href="#implementacion-de-knn-en-python-usando-sklearn" title="Link to this heading">#</a></h2>
+<p>A continuación, te muestro cómo implementar un modelo KNN en Python utilizando la librería <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+
+<span class="c1"># Cargar el dataset Iris</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># Dividir el dataset en conjunto de entrenamiento y prueba</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Crear el modelo KNN con k=3</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Entrenar el modelo</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Hacer predicciones</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Evaluar el rendimiento del modelo</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="interpretacion-del-codigo">
+<h2>Interpretación del Código<a class="headerlink" href="#interpretacion-del-codigo" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Carga del dataset</strong>: Se utiliza el conjunto de datos <code class="docutils literal notranslate"><span class="pre">Iris</span></code> para este ejemplo.</p></li>
+<li><p><strong>División de los datos</strong>: Se dividen los datos en conjuntos de entrenamiento y prueba.</p></li>
+<li><p><strong>Creación del modelo KNN</strong>: Se define un modelo con <span class="math notranslate nohighlight">\( k = 3 \)</span>, lo que significa que el algoritmo utilizará los 3 vecinos más cercanos para hacer predicciones.</p></li>
+<li><p><strong>Entrenamiento</strong>: El modelo se entrena con los datos de entrenamiento.</p></li>
+<li><p><strong>Predicción</strong>: El modelo hace predicciones sobre el conjunto de prueba.</p></li>
+<li><p><strong>Evaluación</strong>: Se evalúa la precisión y otras métricas del modelo.</p></li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusión<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>El modelo K-Nearest Neighbors (KNN) es un enfoque simple y eficaz para tareas de clasificación que se basa en la proximidad de los puntos de datos. Aunque tiene limitaciones en términos de rendimiento y sensibilidad al ruido, es una excelente opción para problemas donde se espera que las instancias cercanas compartan la misma clase. La elección adecuada del valor de <span class="math notranslate nohighlight">\( k \)</span> y la normalización de las características son aspectos clave para lograr buenos resultados con este modelo.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="id4">
+<h1>Ejemplos<a class="headerlink" href="#id4" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://scikit-learn.org/stable/auto_examples/classification/plot_classification_probability.html#sphx-glr-auto-examples-classification-plot-classification-probability-py">https://scikit-learn.org/stable/auto_examples/classification/plot_classification_probability.html#sphx-glr-auto-examples-classification-plot-classification-probability-py</a></p>
+<section id="distintos-clasificadores-y-su-frontera-de-decision">
+<h2>Distintos clasificadores y su frontera de decisión<a class="headerlink" href="#distintos-clasificadores-y-su-frontera-de-decision" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Code source: Gaël Varoquaux</span>
+<span class="c1">#              Andreas Müller</span>
+<span class="c1"># Modified for documentation by Jaques Grobler</span>
+<span class="c1"># License: BSD 3 clause</span>
+<span class="c1"># tomado de</span>
+<span class="c1">#</span>
+<span class="c1"># Quité varios modelos clasificadores que aún no vemos</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_circles</span><span class="p">,</span> <span class="n">make_classification</span><span class="p">,</span> <span class="n">make_moons</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.discriminant_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuadraticDiscriminantAnalysis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">AdaBoostClassifier</span><span class="p">,</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianProcessClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process.kernels</span><span class="w"> </span><span class="kn">import</span> <span class="n">RBF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neural_network</span><span class="w"> </span><span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Nearest Neighbors&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Linear SVM&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RBF SVM&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Decision Tree&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Naive Bayes&quot;</span>
+<span class="p">]</span>
+
+<span class="n">classifiers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="p">]</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">linearly_separable</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">make_circles</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">linearly_separable</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># iterate over datasets</span>
+<span class="k">for</span> <span class="n">ds_cnt</span><span class="p">,</span> <span class="n">ds</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">datasets</span><span class="p">):</span>
+    <span class="c1"># preprocess dataset, split into training and test part</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ds</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+    <span class="p">)</span>
+
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span>
+    <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span>
+
+    <span class="c1"># just plot the dataset first</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span>
+    <span class="n">cm_bright</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#FF0000&quot;</span><span class="p">,</span> <span class="s2">&quot;#0000FF&quot;</span><span class="p">])</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">classifiers</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ds_cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Input data&quot;</span><span class="p">)</span>
+    <span class="c1"># Plot the training points</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm_bright</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="c1"># Plot the testing points</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm_bright</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(())</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># iterate over classifiers</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">clf</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">classifiers</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">classifiers</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">clf</span><span class="p">)</span>
+        <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+        <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+            <span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Plot the training points</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm_bright</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Plot the testing points</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">cm_bright</span><span class="p">,</span>
+            <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(())</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(())</span>
+        <span class="k">if</span> <span class="n">ds_cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">x_max</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="n">y_min</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">score</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">),</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/05aac0ee7f025c735af04ccdd7b6eb612af7e7b6e44face4d7fdbbe095e7859b.png" src="_images/05aac0ee7f025c735af04ccdd7b6eb612af7e7b6e44face4d7fdbbe095e7859b.png" />
+</div>
+</div>
+</section>
+<section id="caso-dataset-breast-cancer">
+<h2>Caso dataset breast cancer<a class="headerlink" href="#caso-dataset-breast-cancer" title="Link to this heading">#</a></h2>
+<section id="importar-librerias-necesarias">
+<h3>Importar librerías necesarias<a class="headerlink" href="#importar-librerias-necesarias" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">plot_tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cargar-el-dataset">
+<h3>Cargar el dataset<a class="headerlink" href="#cargar-el-dataset" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(569, 30)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dividir-los-datos-en-conjunto-de-entrenamiento-y-prueba">
+<h3>Dividir los datos en conjunto de entrenamiento y prueba<a class="headerlink" href="#dividir-los-datos-en-conjunto-de-entrenamiento-y-prueba" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-engineering">
+<h3>feature engineering<a class="headerlink" href="#feature-engineering" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Estandarizar las características para algunos modelos (Logistic Regression, SVM, KNN)</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="regresion-logistica">
+<h3>Regresión logística<a class="headerlink" href="#regresion-logistica" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Regresión Logística</span>
+<span class="n">logreg</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">logreg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred_logreg</span> <span class="o">=</span> <span class="n">logreg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Logistic Regression&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_logreg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_logreg</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Logistic Regression
+Accuracy: 0.9590643274853801
+              precision    recall  f1-score   support
+
+           0       0.92      0.97      0.95        63
+           1       0.98      0.95      0.97       108
+
+    accuracy                           0.96       171
+   macro avg       0.95      0.96      0.96       171
+weighted avg       0.96      0.96      0.96       171
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generar la matriz de confusión</span>
+<span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_logreg</span><span class="p">)</span>
+
+<span class="c1"># Imprimir la matriz de confusión</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">conf_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matriz de confusión:
+[[ 61   2]
+ [  5 103]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Regresión Logística</span>
+<span class="n">logreg</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">logreg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred_logreg</span> <span class="o">=</span> <span class="n">logreg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Logistic Regression&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_logreg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_logreg</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Logistic Regression
+Accuracy: 0.9824561403508771
+              precision    recall  f1-score   support
+
+           0       0.97      0.98      0.98        63
+           1       0.99      0.98      0.99       108
+
+    accuracy                           0.98       171
+   macro avg       0.98      0.98      0.98       171
+weighted avg       0.98      0.98      0.98       171
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generar la matriz de confusión</span>
+<span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_logreg</span><span class="p">)</span>
+
+<span class="c1"># Imprimir la matriz de confusión</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">conf_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matriz de confusión:
+[[ 62   1]
+ [  2 106]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="support-vector-machine">
+<h3>Support Vector Machine<a class="headerlink" href="#support-vector-machine" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred_svm</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Support Vector Machine&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_svm</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_svm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Support Vector Machine
+Accuracy: 0.9766081871345029
+              precision    recall  f1-score   support
+
+           0       0.97      0.97      0.97        63
+           1       0.98      0.98      0.98       108
+
+    accuracy                           0.98       171
+   macro avg       0.97      0.97      0.97       171
+weighted avg       0.98      0.98      0.98       171
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="arbol-de-decision">
+<h3>árbol de decisión<a class="headerlink" href="#arbol-de-decision" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. Árbol de decisión</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred_tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Decision Tree&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_tree</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_tree</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Decision Tree
+Accuracy: 0.9298245614035088
+              precision    recall  f1-score   support
+
+           0       0.87      0.95      0.91        63
+           1       0.97      0.92      0.94       108
+
+    accuracy                           0.93       171
+   macro avg       0.92      0.93      0.93       171
+weighted avg       0.93      0.93      0.93       171
+</pre></div>
+</div>
+</div>
+</div>
+<p>Visualización del Árbol de Decisión</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># Ajusta el tamaño del gráfico</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span> <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/41b8a13c3831361fccdd1d115adefc26368dda82859887285560a63277cd9d54.png" src="_images/41b8a13c3831361fccdd1d115adefc26368dda82859887285560a63277cd9d54.png" />
+</div>
+</div>
+</section>
+<section id="k-nearest-neighbors-knn">
+<h3>K-Nearest Neighbors (KNN)<a class="headerlink" href="#k-nearest-neighbors-knn" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred_knn</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">K-Nearest Neighbors&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_knn</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_knn</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>K-Nearest Neighbors
+Accuracy: 0.9590643274853801
+              precision    recall  f1-score   support
+
+           0       0.95      0.94      0.94        63
+           1       0.96      0.97      0.97       108
+
+    accuracy                           0.96       171
+   macro avg       0.96      0.95      0.96       171
+weighted avg       0.96      0.96      0.96       171
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="dataset-de-digitos">
+<h2>Dataset de dígitos<a class="headerlink" href="#dataset-de-digitos" title="Link to this heading">#</a></h2>
+<p>Evaluación de ejemplo de clasificación con SVM</p>
+<p><a class="reference external" href="https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html#sphx-glr-auto-examples-classification-plot-digits-classification-py">https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html#sphx-glr-auto-examples-classification-plot-digits-classification-py</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_7_underfitting_overfitting_example.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Underfitting y Overfitting en Modelos Polinomiales</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_1_Clasificacion_Enfermedad_Coronaria.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">31 - Ejercicio 7: Clasificación de pacientes con enfermedades coronarias</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Métricas de evaluación en la clasificación</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matriz-de-confusion">Matriz de confusión</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-de-la-matriz-de-confusion">Estructura de la matriz de confusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo">Ejemplo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-derivadas-de-la-matriz-de-confusion">Métricas derivadas de la matriz de confusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-precision">1. <strong>Precision (Precisión)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recall-sensibilidad-o-tasa-de-verdaderos-positivos">2. <strong>Recall (Sensibilidad o Tasa de Verdaderos Positivos)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-score">3. <strong>F1-score</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-exactitud">4. <strong>Accuracy (Exactitud)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#macro-average-promedio-macro">5. <strong>Macro Average (Promedio Macro)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-average-promedio-ponderado">6. <strong>Weighted Average (Promedio Ponderado)</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-binaria">Clasificación Binaria</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression-o-regresion-logistica">Logistic regression o regresión logística</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-dataset-iris">Ejemplo con dataset iris</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion">Interpretación:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Logistic Regression o regresión logística</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-sigmoide">2. <strong>Función sigmoide</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-funcion-sigmoide"><strong>Visualización de la función sigmoide</strong>:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#probabilidad-y-clasificacion">3. <strong>Probabilidad y clasificación</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-de-costo-log-loss">4. <strong>Función de costo (log loss)</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#log-loss-o-funcion-de-perdida">Log loss o función de pérdida</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dos-casos">Dos casos:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Interpretación:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ventajas-de-la-funcion-de-costo-logaritmica">Ventajas de la función de costo logarítmica:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-grafico">Ejemplo gráfico</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-en-regresion-logistica">5. <strong>Regularización en regresión logística</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-l2-ridge">Regularización L2 (Ridge):</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-l1-lasso">Regularización L1 (Lasso):</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-uso"><strong>Ejemplo de uso</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#svm">SVM</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-hiperplano"><strong>El hiperplano</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizacion-del-margen"><strong>Maximización del margen</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-no-separables-linealmente"><strong>Datos no separables linealmente</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-importantes-de-svc">Parámetros importantes de <code class="docutils literal notranslate"><span class="pre">SVC</span></code>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-visual"><strong>Ejemplo visual</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-diferentes-svms-en-el-dataset-iris">Ejemplo: diferentes SVMs en el dataset iris</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arboles-de-decision">Árboles de decisión</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-funcionan-los-arboles-de-decision">1. ¿Cómo funcionan los árboles de decisión?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropia">ENTROPIA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-de-la-entropia">Fórmula de la Entropía</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicacion-de-la-formula">Explicación de la Fórmula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplos">Ejemplos:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropia-y-arboles-de-decision">Entropía y Árboles de Decisión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Interpretación</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gini">GINI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-arboles-de-decision-con-sklearn">Implementación de Árboles de Decisión con <code class="docutils literal notranslate"><span class="pre">sklearn</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-importantes-en-arboles-de-decision">3. Parámetros Importantes en Árboles de Decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ventajas-y-desventajas-de-los-arboles-de-decision">4. Ventajas y Desventajas de los Árboles de Decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-arbol-de-decision">Visualización del Árbol de Decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arboles-de-decision-y-regularizacion">6. Árboles de Decisión y Regularización</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#knn">KNN</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion-al-modelo-k-nearest-neighbors-knn">Introducción al Modelo K-Nearest Neighbors (KNN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-funciona-knn">¿Cómo Funciona KNN?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proceso-de-clasificacion-con-knn">Proceso de Clasificación con KNN:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-intuitivo">Ejemplo Intuitivo:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-importantes-de-knn">Parámetros Importantes de KNN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ventajas-de-knn">Ventajas de KNN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desventajas-de-knn">Desventajas de KNN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-knn-en-python-usando-sklearn">Implementación de KNN en Python (usando <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-codigo">Interpretación del Código</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusión</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Ejemplos</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distintos-clasificadores-y-su-frontera-de-decision">Distintos clasificadores y su frontera de decisión</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-dataset-breast-cancer">Caso dataset breast cancer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importar-librerias-necesarias">Importar librerías necesarias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-el-dataset">Cargar el dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dividir-los-datos-en-conjunto-de-entrenamiento-y-prueba">Dividir los datos en conjunto de entrenamiento y prueba</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engineering">feature engineering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-logistica">Regresión logística</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-vector-machine">Support Vector Machine</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arbol-de-decision">árbol de decisión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">K-Nearest Neighbors (KNN)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-de-digitos">Dataset de dígitos</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ana Diedrichs
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

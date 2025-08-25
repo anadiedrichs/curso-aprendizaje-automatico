@@ -4,6 +4,20 @@
 format: jb-book
 root: intro
 chapters:
-- file: markdown
-- file: notebooks
-- file: markdown-notebooks
+# introducción
+- file: preprocesamiento_2
+- file: notebooksPreprocesamiento_Titanic_Descarga
+# clustering
+- file: Clustering_Kmeans
+- file: Reduccion_dimensionalidad_PCA_tsne_umap
+# regresión
+- file: clase_2_regresion_lineal_introduccion
+- file: 2_1_Regresion_Lineal_Multiple
+- file: 2_5_Cross_Validation_Regresion_Lineal_Multiple
+- file: 2_6_Prediccion_Precios_Casas_Regresion_Lineal_Multiple
+- file: 2_7_underfitting_overfitting_example
+# clasificación
+- file: Clasificación_binaria
+- file: 3_1_Clasificacion_Enfermedad_Coronaria
+- file: 3_4_Clasificacion_Enfermedad_Coronaria_Evaluacion_Modelos
+- file: neural_networks_introduction
